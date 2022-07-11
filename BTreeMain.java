@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -22,26 +23,11 @@ public class BTreeMain {
         /** Read the minimum degree of B+Tree first */
 
         int degree = scan.nextInt();
-        int j = 0;
-        long currStudentRecordID = 0;
-        long maxStudentRecordID = 0;
         
         BTree bTree = new BTree(degree);
 
         /** Reading the database student.csv into B+Tree Node*/
         List<Student> studentsDB = getStudents();
-        
-        /**
-         * Search through students for the largest recordID and keep the max.
-         */        
-        while (j < studentsDB.size()) {
-          currStudentRecordID = studentsDB.get(j).recordId;
-          
-          if (currStudentRecordID > maxStudentRecordID) {
-            maxStudentRecordID = currStudentRecordID;
-          }
-          j++;
-        }
 
         for (Student s : studentsDB) {
             bTree.insert(s);
@@ -65,11 +51,10 @@ public class BTreeMain {
                             String level = s2.next();
                             int age = Integer.parseInt(s2.next());
                             /** 
-                             * The maxRecordID gained early is incremented by 1 for the first new insert
-                             * and again for every new insert, so as to have no overlap between sessions.
+                             * A random long is created for a new recordId to be placed in student.
                              * */
-                            maxStudentRecordID += 1;
-                            long recordID = maxStudentRecordID;
+                            Random randRecID = new Random();
+                            long recordID = (long) randRecID.nextInt(50000);
                             //System.out.println(recordID);
 
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
