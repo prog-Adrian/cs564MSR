@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -22,7 +23,7 @@ public class BTreeMain {
         /** Read the minimum degree of B+Tree first */
 
         int degree = scan.nextInt();
-
+        
         BTree bTree = new BTree(degree);
 
         /** Reading the database student.csv into B+Tree Node*/
@@ -31,7 +32,7 @@ public class BTreeMain {
         for (Student s : studentsDB) {
             bTree.insert(s);
         }
-
+        
         /** Start reading the operations now from input file*/
         try {
             while (scan.hasNextLine()) {
@@ -49,8 +50,12 @@ public class BTreeMain {
                             String major = s2.next();
                             String level = s2.next();
                             int age = Integer.parseInt(s2.next());
-                            /** TODO: Write a logic to generate recordID*/
-                            long recordID = ;
+                            /** 
+                             * A random long is created for a new recordId to be placed in student.
+                             * */
+                            Random randRecID = new Random();
+                            long recordID = (long) randRecID.nextInt(50000);
+                            //System.out.println(recordID);
 
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
                             bTree.insert(s);
@@ -98,8 +103,70 @@ public class BTreeMain {
          * Extract the students information from "Students.csv"
          * return the list<Students>
          */
+      long studentId = 0;
+      int age = 0;
+      String studentName = null;
+      String major= null;
+      String level = null;
+      long recordId = 0;
+//      int i = 0;
 
-        List<Student> studentList = new ArrayList<>();
+      
+      List<Student> studentList = new ArrayList<>();
+      
+      Scanner scanStudent = null;
+      try {
+          scanStudent = new Scanner(new File("src/Student.csv"));
+      } catch (FileNotFoundException e) {
+          System.out.println("File not found.");
+      }
+      
+      try {
+        while (scanStudent.hasNextLine()) {
+          //System.out.println(scanStudent.nextLine());
+            Scanner scanStudent2 = new Scanner(scanStudent.nextLine());
+            
+            if (scanStudent2.hasNext()) {
+              studentId = Long.parseLong(scanStudent2.useDelimiter(",").next());
+              //System.out.println(studentName);
+            }
+            
+            if (scanStudent2.hasNext()) {
+              studentName = scanStudent2.useDelimiter(",").next();;
+            }
+            
+            if (scanStudent2.hasNext()) {
+              major = scanStudent2.useDelimiter(",").next();
+            }
+            
+            if (scanStudent2.hasNext()) {
+              level = scanStudent2.useDelimiter(",").next();
+            }
+            
+            if (scanStudent2.hasNext()) {
+              age = Integer.parseInt(scanStudent2.useDelimiter(",").next());
+            }
+            
+            if (scanStudent2.hasNext()) {
+              recordId = Long.parseLong(scanStudent2.useDelimiter(",").next());
+            }
+            
+            //Student(long studentId, int age, String studentName, String major, String level, long recordId)
+            Student student = new Student(studentId, age, studentName, major, level, recordId);
+            studentList.add(student);
+//            System.out.print(studentList.get(i).studentId + ",");
+//            System.out.print(studentList.get(i).studentName + ",");
+//            System.out.print(studentList.get(i).major + ",");
+//            System.out.print(studentList.get(i).level + ",");
+//            System.out.print(studentList.get(i).age + ",");
+//            System.out.println(studentList.get(i).recordId);
+//            i++;
+        }
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+      
         return studentList;
+        
     }
 }
