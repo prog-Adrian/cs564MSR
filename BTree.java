@@ -38,7 +38,6 @@ class BTree {
          * Implement this function to insert in the B+Tree.
          * Also, insert in student.csv after inserting in B+Tree.
          */
-          
         return this;
     }
 
