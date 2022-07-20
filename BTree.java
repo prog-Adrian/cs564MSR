@@ -25,7 +25,13 @@ class BTree {
     
     //Check if the node is full and return a boolean value
     private boolean checkIfFull(BTreeNode currentNode) {
-      if (currentNode.keys.length == t) {
+      int count = 0;
+      for (int i = 0; i < currentNode.keys.length; i++) {
+        if ((currentNode.keys[i] == 0 && i == 0) || (currentNode.keys[i] > 0 && currentNode.keys[i] != 0)) {
+          count ++;
+        }
+      }
+      if (count == 2*this.t) {
         return true;
       }
       return false;
@@ -48,30 +54,84 @@ class BTree {
       splitNodes[2].leaf = true;
       splitNodes[1].t = this.t;
       splitNodes[2].t = this.t;
-      splitNodes[1].t = this.t/2;
-      splitNodes[2].t = this.t/2 + 1;
+      splitNodes[1].n = this.t;
+      splitNodes[2].n = this.t + 1;
       //create temp array to add the new key and value into along with original keys and values
-      long [] keys = Arrays.copyOf(splitNodes[1].keys, this.t+1);
-      long [] vals = Arrays.copyOf(splitNodes[1].values, this.t+1);
-      keys[t] = student.studentId;
-      vals[t] = student.recordId;
+      long [] keys = Arrays.copyOf(splitNodes[1].keys, 2*this.t + 1);
+      long [] vals = Arrays.copyOf(splitNodes[1].values, 2*this.t + 1);
+      keys[2*t] = student.studentId;
+      vals[2*t] = student.recordId;
       //sort the array
+      
       Arrays.sort(keys);
       Arrays.sort(vals);
       //Check if parent has size == t, recursively manage parent of parent and split, sort, and redistribute children as needed.
       
-      
       return splitNodes;
     }
-   
+    
+    BTreeNode insertIntoLeaf(Student student, BTreeNode leafNode) {
+      BTreeNode toRet = leafNode;
+      int indexToInsert = -1;
+
+      if(checkIfFull(leafNode) == true) {
+          return null;
+      }
+
+      for(int i = 0; i < leafNode.values.length; i++) {
+          if(student.recordId < leafNode.values[i]) {
+              indexToInsert = i;
+              break;
+          }
+      }
+
+      long[] newValArr = Arrays.copyOf(leafNode.values, 2*leafNode.t);
+      newValArr[indexToInsert] = student.recordId;
+
+      if(indexToInsert != -1) {
+          for(int k = indexToInsert+1; k < leafNode.values.length; k++) {
+              newValArr[k] = leafNode.values[k-1];
+          }
+      }
+
+      return toRet;
+  }
 
     long search(long studentId) {
-        /**
+        /** \
          * TODO:
          * Implement this function to search in the B+Tree.
          * Return recordID for the given StudentID.
          * Otherwise, print out a message that the given studentId has not been found in the table and return -1.
          */
+      BTreeNode current = this.root;
+      boolean found = false;
+      while (!found) {
+        if (current.leaf == false) {
+          for (int i = 0; i < current.keys.length; i++) {
+            if (studentId < current.keys[i] && i == 0) {
+              current = current.children[i];
+              break;
+            }
+            else if (studentId > current.keys[i] && i == current.keys.length) {
+              current = current.children[i+1];
+              break;
+            }
+            else if (studentId > current.keys[i] && studentId < current.keys[i+1]) {
+              current = current.children[i+1];
+              break;
+            }
+          }
+        }
+        else {
+          for (int i = 0; i < current.keys.length; i++) {
+            if (studentId == current.keys[i]) {
+              return current.values[i];
+            }
+          }
+          return -1;
+        }
+      }
         return -1;
     }
 
