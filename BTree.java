@@ -78,17 +78,23 @@ class BTree {
           return null;
       }
 
-      for(int i = 0; i < leafNode.values.length; i++) {
-          if(student.recordId < leafNode.values[i]) {
+      for(int i = 0; i < leafNode.keys.length; i++) {
+          if(student.recordId < leafNode.keys[i]) {
               indexToInsert = i;
               break;
           }
       }
 
+      long[] newKeyArr = Arrays.copyOf(leafNode.keys, 2*leafNode.t);
+      newKeyArr[indexToInsert] = student.studentId;
+
       long[] newValArr = Arrays.copyOf(leafNode.values, 2*leafNode.t);
       newValArr[indexToInsert] = student.recordId;
 
       if(indexToInsert != -1) {
+          for(int k = indexToInsert+1; k < leafNode.keys.length; k++) {
+              newKeyArr[k] = leafNode.keys[k-1];
+          }
           for(int k = indexToInsert+1; k < leafNode.values.length; k++) {
               newValArr[k] = leafNode.values[k-1];
           }

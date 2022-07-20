@@ -54,7 +54,7 @@ public class BTreeMain {
                              * A random long is created for a new recordId to be placed in student.
                              * */
                             Random randRecID = new Random();
-                            long recordID = (long) randRecID.nextInt(50000);
+                            long recordID = (long) randRecID.nextInt(50000000);
                             //System.out.println(recordID);
 
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
