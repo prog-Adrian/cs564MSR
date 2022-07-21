@@ -33,6 +33,32 @@ public class BTreeMain {
             bTree.insert(s);
         }
         
+        //DELETE THIS!!!!!!!!!!!!!!
+        BTreeNode tempNode = new BTreeNode(degree, false);
+        tempNode.children[0] = new BTreeNode(degree, true);
+        tempNode.children[1] = new BTreeNode(degree, true);
+        tempNode.children[2] = new BTreeNode(degree, true);
+        tempNode.children[3] = new BTreeNode(degree, true);
+        
+        tempNode.keys[0] = 1000000;
+        tempNode.keys[1] = 200000000;
+        tempNode.keys[2] = 300000000;
+        tempNode.keys[3] = 400000000;
+        tempNode.keys[4] = 500000000;
+        tempNode.values[0] = 1;
+        tempNode.values[1] = 2;
+        tempNode.values[2] = 3;
+        tempNode.values[3] = 6;
+        tempNode.values[4] = 7;
+//        Student tempStudent = studentsDB.get(0);
+//        Student tempStudent2 = studentsDB.get(1);
+        for (Student s : studentsDB) {
+            bTree.insert(s);
+        }
+        //DELETE THIS!!!!!!!!!!!!!!
+        
+        
+        
         /** Start reading the operations now from input file*/
         try {
             while (scan.hasNextLine()) {
@@ -50,13 +76,18 @@ public class BTreeMain {
                             String major = s2.next();
                             String level = s2.next();
                             int age = Integer.parseInt(s2.next());
-                            /** 
-                             * A random long is created for a new recordId to be placed in student.
-                             * */
-                            Random randRecID = new Random();
-                            long recordID = (long) randRecID.nextInt(50000000);
-                            //System.out.println(recordID);
-
+                            
+                            //The record is pulled if it is in the line. Otherwise a random long is
+                            //created for a new recordId to be placed in student.                            
+                            long recordID;
+                            if (s2.hasNext()) {
+                              recordID = Long.parseLong(s2.next());
+                            }
+                            else {
+                              Random randRecID = new Random();
+                              recordID = (long) randRecID.nextInt(50000000);
+                              //System.out.println(recordID);
+                            }
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
                             bTree.insert(s);
 
@@ -99,9 +130,9 @@ public class BTreeMain {
 
     private static List<Student> getStudents() {
 
-        /** TODO:
-         * Extract the students information from "Students.csv"
-         * return the list<Students>
+        /** 
+         * Extracts the students information from "Students.csv"
+         * returns the studentList<Students>
          */
       long studentId = 0;
       int age = 0;
@@ -115,20 +146,21 @@ public class BTreeMain {
       List<Student> studentList = new ArrayList<>();
       
       Scanner scanStudent = null;
+      //Open the Student csv file
       try {
           scanStudent = new Scanner(new File("src/Student.csv"));
       } catch (FileNotFoundException e) {
           System.out.println("File not found.");
       }
       
+      //For each line, pull in the information delimited by "," from the Student csv and add a new
+      //student to the list with all saved variables.
       try {
         while (scanStudent.hasNextLine()) {
-          //System.out.println(scanStudent.nextLine());
             Scanner scanStudent2 = new Scanner(scanStudent.nextLine());
             
             if (scanStudent2.hasNext()) {
               studentId = Long.parseLong(scanStudent2.useDelimiter(",").next());
-              //System.out.println(studentName);
             }
             
             if (scanStudent2.hasNext()) {
@@ -151,16 +183,9 @@ public class BTreeMain {
               recordId = Long.parseLong(scanStudent2.useDelimiter(",").next());
             }
             
-            //Student(long studentId, int age, String studentName, String major, String level, long recordId)
             Student student = new Student(studentId, age, studentName, major, level, recordId);
             studentList.add(student);
-//            System.out.print(studentList.get(i).studentId + ",");
-//            System.out.print(studentList.get(i).studentName + ",");
-//            System.out.print(studentList.get(i).major + ",");
-//            System.out.print(studentList.get(i).level + ",");
-//            System.out.print(studentList.get(i).age + ",");
-//            System.out.println(studentList.get(i).recordId);
-//            i++;
+
         }
       } catch (Exception e) {
           e.printStackTrace();
