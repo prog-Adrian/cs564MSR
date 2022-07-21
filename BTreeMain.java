@@ -33,29 +33,31 @@ public class BTreeMain {
             bTree.insert(s);
         }
         
-        //DELETE THIS!!!!!!!!!!!!!!
-        BTreeNode tempNode = new BTreeNode(degree, false);
-        tempNode.children[0] = new BTreeNode(degree, true);
-        tempNode.children[1] = new BTreeNode(degree, true);
-        tempNode.children[2] = new BTreeNode(degree, true);
-        tempNode.children[3] = new BTreeNode(degree, true);
-        
-        tempNode.keys[0] = 1000000;
-        tempNode.keys[1] = 200000000;
-        tempNode.keys[2] = 300000000;
-        tempNode.keys[3] = 400000000;
-        tempNode.keys[4] = 500000000;
-        tempNode.values[0] = 1;
-        tempNode.values[1] = 2;
-        tempNode.values[2] = 3;
-        tempNode.values[3] = 6;
-        tempNode.values[4] = 7;
-//        Student tempStudent = studentsDB.get(0);
-//        Student tempStudent2 = studentsDB.get(1);
-        for (Student s : studentsDB) {
-            bTree.insert(s);
-        }
-        //DELETE THIS!!!!!!!!!!!!!!
+//        //DELETE THIS!!!!!!!!!!!!!!
+//        BTreeNode tempNode = new BTreeNode(degree, false);
+//        tempNode.children[0] = new BTreeNode(degree, true);
+//        tempNode.children[1] = new BTreeNode(degree, true);
+//        tempNode.children[2] = new BTreeNode(degree, true);
+//        tempNode.children[3] = new BTreeNode(degree, true);
+//        
+//        tempNode.keys[0] = 1000000;
+//        tempNode.keys[1] = 200000000;
+//        tempNode.keys[2] = 300000000;
+//        tempNode.keys[3] = 400000000;
+//        tempNode.keys[4] = 500000000;
+//        tempNode.values[0] = 1;
+//        tempNode.values[1] = 2;
+//        tempNode.values[2] = 3;
+//        tempNode.values[3] = 6;
+//        tempNode.values[4] = 7;
+////        Student tempStudent = studentsDB.get(0);
+////        Student tempStudent2 = studentsDB.get(1);
+//        for (Student s : studentsDB) {
+//            bTree.insert(s);
+//        }
+//        System.out.println(bTree.search((long) 578875478));
+//        System.out.println((long) 1234);
+//        //DELETE THIS!!!!!!!!!!!!!!
         
         
         

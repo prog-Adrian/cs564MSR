@@ -53,7 +53,7 @@ class BTree {
               break;
             }
             //Correct child is after the last key
-            else if (studentId > current.keys[i] && studentId < current.keys[i+1]) {
+            else if (studentId > current.keys[i] && i < current.keys.length - 1 && studentId < current.keys[i+1]) {
               current = current.children[i+1];
               break;
             }
@@ -163,7 +163,7 @@ class BTree {
 	BTreeNode insertIntoLeaf(Student student, BTreeNode leafNode) {
 	      BTreeNode toRet = leafNode;
 	      int indexToInsert = -1;
-	      countCurrentNode(leafNode);
+//	      countCurrentNode(leafNode);
 
 	      if(leafNode.n >= this.t*2) {
 	          return null;
@@ -210,8 +210,9 @@ class BTree {
 	      //Set the leafNode keys and values to the new arrays
 	      toRet.keys = newKeyArr;
 	      toRet.values = newValArr;
+	      toRet.n ++;
 	      //Testing purposes. Remove!!!
-	      countCurrentNode(leafNode);
+//	      countCurrentNode(leafNode);
 	      return toRet;
 	  }
 	
@@ -221,60 +222,60 @@ class BTree {
 	 * @param newChildren
 	 * @return
 	 */
-	BTreeNode parentInsertChildren(BTreeNode parent, BTreeNode[] newChildren) {
-		// Base case
-		if(this.root == parent) {
-			if(parent.n < this.t*2) {
-				for(BTreeNode x: newChildren) {
-					int indexToInsert = -1;
-					long childKey = -1;
-					int childPos = -1;
-					for(int i = 0; i < parent.keys.length;i++) {
-						if(x.keys[0] < parent.keys[i]) {
-							indexToInsert = i;
-							childKey = x.keys[0];
-							break;
-						}
-						else if(parent.n == this.t*2) {
-							indexToInsert = parent.n - 1;
-							childPos = this.t*2;
-							childKey = x.keys[0];
-							break;
-						}
-						else {
-							indexToInsert = parent.n;
-							childKey = x.keys[0];
-						}
-						childPos = i;
-					}
-					long[] newKeyArr = parent.keys;
-					BTreeNode[] newChildrenArr = parent.children;
-					
-					newKeyArr[indexToInsert] = childKey;
-					newChildrenArr[childPos] = x;
-					
-					for(int l = indexToInsert + 1; l < parent.keys.length;l++) {
-						newKeyArr[l] = parent.keys[l-1];
-					}
-					for(int p = 0; p < parent.keys.length;p++) {
-						for(int u = 0; u < parent.children.length;u++) {
-							if(x.keys[0] == parent.keys[p]) {
-								newChildArr[]
-							}
-							
-						}
-					}
-					
-					
-				}
-			}
-			else {
-				// Parent is a root and is full
-				// Split the root and set the children
-			}
-		}
-		return null;
-	}
+//	BTreeNode parentInsertChildren(BTreeNode parent, BTreeNode[] newChildren) {
+//		// Base case
+//		if(this.root == parent) {
+//			if(parent.n < this.t*2) {
+//				for(BTreeNode x: newChildren) {
+//					int indexToInsert = -1;
+//					long childKey = -1;
+//					int childPos = -1;
+//					for(int i = 0; i < parent.keys.length;i++) {
+//						if(x.keys[0] < parent.keys[i]) {
+//							indexToInsert = i;
+//							childKey = x.keys[0];
+//							break;
+//						}
+//						else if(parent.n == this.t*2) {
+//							indexToInsert = parent.n - 1;
+//							childPos = this.t*2;
+//							childKey = x.keys[0];
+//							break;
+//						}
+//						else {
+//							indexToInsert = parent.n;
+//							childKey = x.keys[0];
+//						}
+//						childPos = i;
+//					}
+//					long[] newKeyArr = parent.keys;
+//					BTreeNode[] newChildrenArr = parent.children;
+//					
+//					newKeyArr[indexToInsert] = childKey;
+//					newChildrenArr[childPos] = x;
+//					
+//					for(int l = indexToInsert + 1; l < parent.keys.length;l++) {
+//						newKeyArr[l] = parent.keys[l-1];
+//					}
+//					for(int p = 0; p < parent.keys.length;p++) {
+//						for(int u = 0; u < parent.children.length;u++) {
+//							if(x.keys[0] == parent.keys[p]) {
+//								newChildArr[]
+//							}
+//							
+//						}
+//					}
+//					
+//					
+//				}
+//			}
+//			else {
+//				// Parent is a root and is full
+//				// Split the root and set the children
+//			}
+//		}
+//		return null;
+//	}
 
 	/**
 	 * This function finds the place for the new node to be inserted into
@@ -381,11 +382,16 @@ class BTree {
 			// First child in the children array should be the smallest value since it's sorted 
 			currentNode = currentNode.children[0];
 		}
+		//iterates through values in first node and adds them to the list
+		for(long val: currentNode.values) {
+          listOfRecordID.add(val);
+        }
+		//checks if there are any additional nodes, and if so, adds their values to the list
 		while(currentNode.next != null) {
+		  currentNode = currentNode.next;
 			for(long val: currentNode.values) {
 				listOfRecordID.add(val);
 			}
-			currentNode = currentNode.next;
 		}
 		return listOfRecordID;
 	}
